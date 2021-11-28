@@ -32,8 +32,6 @@ class HomeController extends Controller
         $usergroup = $this->user_groups_ids($user->groups);
 
         $groups = Group::whereNotIn('id', $usergroup)->with('owners')->get();
-        // return $usergroup;
-        // return $groups;
         return view('home', compact('groups'), compact('user'));
     }
 

@@ -25,7 +25,12 @@
         </div>
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header">{{ __('Public Group') }}</div>
+                <div class="card-header">
+                    {{ $grp->name }}
+                    @if ($grp->owners[0]->id == Auth::user()->id)
+                        <a href="/group/settings/{{ $grp->slug }}">settings</a>
+                    @endif
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -33,23 +38,20 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    <form action="" method="GET">
-                        <input type="text" placeholder="Search Group" name="group_name">
-                        <button>Search</button>
-                    </form>
-                    <ul class="pt-3">
-                        @foreach ($groups as $group)
-                            <li>
-                                {{ $group->name }} | {{ $group->owners[0]->username }}
-                                <form action="group/make-request/" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="group_id" value={{ $group->id }}>
-                                    <button type="submit">Request Join</button>
-                                </form>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <button type="button" id="refresh-button" class="mb-3">Refresh Chat</button>
+                    <div id="chat-container" data-slug="{{ $grp->slug }}">
+                        <ul id="list-chat">
+                            
+                        </ul>
+                    </div>
+                    <div id="send-container">
+                        
+                            @csrf
+                            <input type="hidden" name="group_id" id="group_id" value="{{ $grp->id }}">
+                            <input type="text" name="chat_text" id="chat_text" placeholder="type a chat">
+                            <button type="button" id="send-button">Send</button>
+                        
+                    </div>
                 </div>
             </div>
         </div>

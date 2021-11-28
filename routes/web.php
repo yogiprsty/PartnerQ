@@ -3,6 +3,8 @@
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Chat;
+use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -46,8 +48,8 @@ Route::post('/profile', [ProfileController::class, 'update']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
 
-
-Route::get('/group/create', [GroupController::class, 'index']);
+Route::get('/{slug}', [GroupController::class, 'index']);
+Route::get('/group/create', [GroupController::class, 'showCreate']);
 Route::post('/group/create', [GroupController::class, 'create']);
 
 Route::post('/group/make-request', [GroupController::class, 'requestJoin']);
@@ -57,3 +59,20 @@ Route::post('/group/update/', [GroupController::class, 'update']);
 Route::get('/group/settings/{slug}', [GroupController::class, 'settings'])->name('settings');
 Route::get('/group/pending/acc/{slug}/{user_id}', [GroupController::class, 'acceptUser']);
 Route::get('/group/kick/{slug}/{user_id}', [GroupController::class, 'declineUser']);
+
+Route::get('/read-chat/{slug}', [GroupController::class, 'readChat']);
+Route::post('/send-chat/{slug}', function(Request $request, $slug) {
+    $validated = $request->validate([
+        'chat_text' => 'required'
+    ]);
+    $username = Auth::user()->username;
+    $group = Group::where('slug', $slug)->first();
+
+    $data = [
+        'group_id' => $group->id,
+        'username' => $username,
+        'chat_text' => $request['chat_text']
+    ];
+    Chat::create($data);
+    return response(200);
+});

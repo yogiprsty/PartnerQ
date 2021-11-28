@@ -33,4 +33,8 @@ class Group extends Model
         ->withTimestamps()
         ->wherePivot('is_owner',1);
     }
+
+    public function chats(){
+        return $this->hasMany(Chat::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,11 +16,20 @@ class GroupController extends Controller
         $this->middleware('verified');
     }
 
+    public function index($slug){
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->with(['owned_groups', 'my_groups'])->first();
+
+        $grp = Group::where('slug', $slug)->with(['owners'])->first();
+
+        return view('group', compact('grp'), compact('user'));
+    }
+
     public function isOwner($owner){
         return $owner->id == Auth::user()->id;
     }
 
-    public function index(){
+    public function showCreate(){
         return view('create-group');
     }
 
@@ -100,5 +110,11 @@ class GroupController extends Controller
 
         $user->groups()->detach($group->id);
         return redirect()->route('settings', [$group->slug])->with('status', 'User Removed');
+    }
+
+    public function readChat($slug){
+        $group = Group::where('slug', $slug)->with('chats')->first();
+
+        return $group->chats;
     }
 }
