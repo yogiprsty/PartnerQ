@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupRequestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,3 +45,15 @@ Route::get('/profile', [ProfileController::class, 'edit']);
 Route::post('/profile', [ProfileController::class, 'update']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
+
+
+Route::get('/group/create', [GroupController::class, 'index']);
+Route::post('/group/create', [GroupController::class, 'create']);
+
+Route::post('/group/make-request', [GroupController::class, 'requestJoin']);
+
+Route::post('/group/update/', [GroupController::class, 'update']);
+
+Route::get('/group/settings/{slug}', [GroupController::class, 'settings'])->name('settings');
+Route::get('/group/pending/acc/{slug}/{user_id}', [GroupController::class, 'acceptUser']);
+Route::get('/group/kick/{slug}/{user_id}', [GroupController::class, 'declineUser']);
