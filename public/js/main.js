@@ -19,7 +19,7 @@ function readChat(slug) {
         });
 };
 
-function sendChat(slug, chat_text, token) {
+async function sendChat(slug, chat_text, token) {
     fetch(`${BASE_URL}/send-chat/${slug}`, {
         method: 'post',
         headers: {
@@ -42,6 +42,6 @@ if (container) {
 
     sendBtn.addEventListener('click', () => {
         sendChat(slug, chat_text.value, csrf)
+        chat_text.value = ''
     })
-    chat_text.value = ''
 }
