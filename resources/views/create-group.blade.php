@@ -48,6 +48,9 @@
         <div class="form-floating">
             <label for="" class="col-sm-2 col-form-label">Group Desciption</label>
             <textarea class="form-control" name="desc" id="" placeholder="Leave a description here"></textarea>
+            <small id="passwordHelpBlock" class="form-text text-muted">
+                Your desc maximum have 255 character
+            </small>
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Add group</button>

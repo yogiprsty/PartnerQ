@@ -37,7 +37,7 @@ class GroupController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'desc' => 'required'
+            'desc' => 'required|max:255'
         ]);
 
         $data = [
@@ -58,7 +58,7 @@ class GroupController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'desc' => 'required'
+            'desc' => 'required|max:255'
         ]);
 
         $data = [

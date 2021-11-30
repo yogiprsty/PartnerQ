@@ -24,14 +24,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $id = Auth::user()->id;
 
         $user = User::where('id', $id)->with(['groups', 'owned_groups', 'my_groups'])->first();
         $usergroup = $this->user_groups_ids($user->groups);
 
-        $groups = Group::whereNotIn('id', $usergroup)->with('owners')->get();
+        $groups = Group::where('type', 'like', "%$request->type%")
+        ->where('name', 'like', "%$request->name%")->whereNotIn('id', $usergroup)->with('owners')->get();
         return view('home', compact('groups'), compact('user'));
     }
 
