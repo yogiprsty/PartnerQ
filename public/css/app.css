@@ -44,8 +44,16 @@ html {
 }
 
 #chat-container {
-    background-color: yellow;
     height: 300px;
+    overflow-y: scroll;
+}
+
+#chat-container .chat-bubble {
+    width: 60%;
+}
+
+#sidenav {
+    min-height: 100vh;
 }
 
 article,
@@ -69,7 +77,6 @@ body {
     line-height: 1.6;
     color: #212529;
     text-align: left;
-    background-color: #f8fafc;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {

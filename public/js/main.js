@@ -4,17 +4,27 @@ const container = document.getElementById('chat-container')
 const refreshBtn = document.getElementById('refresh-button')
 const listChat = document.getElementById('list-chat')
 const sendBtn = document.getElementById('send-button')
-
+const username = container.dataset.name
 
 function readChat(slug) {
-    listChat.innerHTML = ''
+    container.innerHTML = ''
     fetch(`${BASE_URL}/read-chat/${slug}`)
         .then(res => res.json())
         .then(datas => {
             datas.forEach(data => {
-                let item = document.createElement("LI")
-                item.append(`${data['username']} | ${data['chat_text']} | ${data['created_at']}`)
-                listChat.append(item)
+                const item = document.createElement("DIV")
+                const spacer = document.createElement('DIV')
+                spacer.style.clear = 'both'
+                item.classList.add('chat-bubble', 'bg-light', 'my-4', 'p-2', 'shadow', 'rounded-pill')
+                if (data['username'] == username) {
+                    item.classList.add('float-right')
+                    item.append(`${data['chat_text']} | you`)
+                        // item.innerHTML(`${data['username']}`)
+                } else {
+                    item.append(`${data['username']} | ${data['chat_text']}`)
+                }
+                container.append(item)
+                container.append(spacer)
             });
         });
 };

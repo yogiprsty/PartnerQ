@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
     public function edit(){
-        $user = Auth::user();
+        $id = Auth::user()->id;
 
-        return view('profile', [
-            'user' => $user
-        ]);
+        $user = User::where('id', $id)->with(['groups', 'owned_groups', 'my_groups'])->first();
+
+        return view('profile', compact('user'));
     }
 
     public function update(Request $request){

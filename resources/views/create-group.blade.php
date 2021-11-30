@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<section id="forms">
-    <div class="container-lg">
+<section id="forms" class="card shadow">
+    <div class="card-header">
         <h2>Add Group</h2>
         <p class="lead">Start your path with making a group</p>
     </div>
 
-    @if ($errors->any())
+    <div class="card-body">
+        @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -55,5 +56,6 @@
         <br>
         <button type="submit" class="btn btn-primary">Add group</button>
     </form>
+    </div>
 </section>
 @endsection

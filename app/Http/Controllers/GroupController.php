@@ -30,7 +30,9 @@ class GroupController extends Controller
     }
 
     public function showCreate(){
-        return view('create-group');
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->with(['owned_groups', 'my_groups'])->first();
+        return view('create-group', compact('user'));
     }
 
     public function create(Request $request){
@@ -81,11 +83,14 @@ class GroupController extends Controller
     }
 
     public function settings($slug){
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->with(['owned_groups', 'my_groups'])->first();
+
         $group = Group::where('slug', $slug)->with(['users', 'pending_users', 'owners'])->first();
         if(!$this->isOwner($group->owners[0])){
             return redirect('/home')->with('status', 'Forbidden Content B*tch');
         }
-        return view('group-settings', compact('group'));
+        return view('group-settings', compact('user', 'group'));
     }
 
     public function acceptUser($slug, $user_id){
