@@ -15,8 +15,12 @@
                 <form action="/group/update" method="POST">
                     @csrf
                     <input type="hidden" name="id" value="{{ $group->id }}">
-                    <label for="">Group name</label>
-                    <input type="text" name="name" value={{ $group->name }}><br>
+                    <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Group Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName" name="name" value="{{ $group->name }}">
+                        </div>
+                    </div>
                     <label for="">Group Type : {{ $group->type }}</label><br>
                     <input type="radio" name="type" value="Spotify">
                     <label for="">Spotify</label><br>

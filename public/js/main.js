@@ -13,19 +13,28 @@ function readChat(slug) {
         .then(datas => {
             datas.forEach(data => {
                 const item = document.createElement("DIV")
+                item.classList.add('chat-bubble', 'bg-light', 'my-4', 'p-2', 'shadow', 'rounded')
+
                 const spacer = document.createElement('DIV')
                 spacer.style.clear = 'both'
-                item.classList.add('chat-bubble', 'bg-light', 'my-4', 'p-2', 'shadow', 'rounded-pill')
+
+                const name = document.createElement("h6")
+
                 if (data['username'] == username) {
+                    name.innerText = 'You'
+                    item.append(name)
                     item.classList.add('float-right')
-                    item.append(`${data['chat_text']} | you`)
-                        // item.innerHTML(`${data['username']}`)
+                    item.append(`${data['chat_text']}`)
                 } else {
-                    item.append(`${data['username']} | ${data['chat_text']}`)
+                    name.innerText = data['username']
+                    item.append(name)
+                    item.classList.add('float-left')
+                    item.append(`${data['chat_text']}`)
                 }
                 container.append(item)
                 container.append(spacer)
             });
+            container.scrollTo(0, 7000)
         });
 };
 
@@ -53,5 +62,6 @@ if (container) {
     sendBtn.addEventListener('click', () => {
         sendChat(slug, chat_text.value, csrf)
         chat_text.value = ''
+        refreshBtn.click()
     })
 }
